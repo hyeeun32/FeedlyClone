@@ -13,14 +13,15 @@ class RedditApiController(
 ) {
     
     @GetMapping
-    fun getSubreddit(@RequestParam(required = false) subreddit: String?): ResponseEntity<Any> {
+    fun getSubreddit(@RequestParam(required = false) subreddit: String?): ResponseEntity<Map<String, Any?>> {
+        val response = mutableMapOf<String, Any?>()
+        
         if (!subreddit.isNullOrBlank()) {
             val feed = feedService.parseRedditFeed(subreddit)
-            if (feed != null) {
-                return ResponseEntity.ok(feed)
-            }
+            response["subreddit"] = feed
         }
-        return ResponseEntity.ok(mapOf("error" to "Subreddit not found", "posts" to emptyList<Any>()))
+        
+        return ResponseEntity.ok(response)
     }
     
     @GetMapping("/search")
