@@ -5,8 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import java.time.LocalDateTime
+import com.feedly.feedlyclonebackend.entity.Feed
+import org.springframework.stereotype.Repository
+import org.springframework.jdbc.core.JdbcTemplate
 
-interface FeedItemRepository : JpaRepository<FeedItem, Long> {
+@Repository
+interface FeedItemRepository : JpaRepository<FeedItem, Long>{
 
     @Query("""
         select f from FeedItem f
@@ -19,4 +23,8 @@ interface FeedItemRepository : JpaRepository<FeedItem, Long> {
         @Param("userId") userId: Long,
         @Param("since") since: LocalDateTime
     ): List<com.feedly.feedlyclonebackend.dto.FeedItem>
+
+    fun findByCompanyId(companyId: Long): List<Feed>
 }
+
+
